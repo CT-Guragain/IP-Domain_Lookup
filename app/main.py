@@ -9,9 +9,8 @@ Run locally:
     uvicorn app.main:app --reload
 
 Docs (auto-generated):
-    http://127.0.0.1:8000/docs
+    http://iplookup.chalshguragain.com.np/
 """
-
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
