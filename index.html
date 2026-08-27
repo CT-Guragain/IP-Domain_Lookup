@@ -356,3 +356,124 @@
       padding: 20px 18px 18px;
     }
 
+    .query-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 9px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-prefix {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--cyan);
+      font: 14px "IBM Plex Mono", monospace;
+      pointer-events: none;
+    }
+
+    #queryInput {
+      width: 100%;
+      height: 54px;
+      padding: 0 16px 0 34px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      outline: 0;
+      color: var(--text);
+      background: #0a1020;
+      font: 14px "IBM Plex Mono", monospace;
+      transition: .18s ease;
+    }
+
+    #queryInput:focus {
+      border-color: rgba(93,226,242,.5);
+      box-shadow: 0 0 0 3px rgba(93,226,242,.07);
+    }
+
+    #queryInput::placeholder { color: var(--muted-2); }
+
+    .run {
+      min-width: 126px;
+      border: 0;
+      border-radius: 12px;
+      color: #041316;
+      background: var(--cyan);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: .18s ease;
+      box-shadow: 0 8px 25px rgba(93,226,242,.1);
+    }
+
+    .run:hover { filter: brightness(1.07); transform: translateY(-1px); }
+    .run:active { transform: translateY(0); }
+    .run:disabled { cursor: wait; opacity: .55; transform: none; }
+
+    .query-meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 20px;
+      margin-top: 9px;
+      color: var(--muted-2);
+      font: 11px "IBM Plex Mono", monospace;
+    }
+
+    .examples {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .example {
+      padding: 3px 7px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      font: 10px "IBM Plex Mono", monospace;
+    }
+
+    .example:hover { color: var(--cyan); border-color: rgba(93,226,242,.3); }
+
+    /* Result */
+    .result-shell {
+      margin: 0 18px 18px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+      background: #090f1d;
+    }
+
+    .result-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.02);
+    }
+
+    .result-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font: 11px "IBM Plex Mono", monospace;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      flex: 0 0 auto;
+      border-radius: 50%;
+      background: var(--muted-2);
+    }
+    
