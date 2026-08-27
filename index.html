@@ -697,3 +697,98 @@
         </div>
         <div class="workspace-title" id="endpointLabel">GET /dns/{domain}</div>
       </div>
+
+      <div class="tools" role="tablist" aria-label="Lookup type">
+        <button class="tool active" data-mode="dns" role="tab" aria-selected="true">
+          <span class="tool-icon">A</span>
+          <span class="tool-name">DNS Lookup</span>
+          <span class="tool-desc">Inspect A, MX, NS, TXT and other records.</span>
+        </button>
+
+        <button class="tool" data-mode="reverse-dns" role="tab" aria-selected="false">
+          <span class="tool-icon">↔</span>
+          <span class="tool-name">Reverse DNS</span>
+          <span class="tool-desc">Resolve a public IP to its PTR hostname.</span>
+        </button>
+
+        <button class="tool" data-mode="geolocation" role="tab" aria-selected="false">
+          <span class="tool-icon">◎</span>
+          <span class="tool-name">Geolocation</span>
+          <span class="tool-desc">Find country, city, ISP, ASN and coordinates.</span>
+        </button>
+      </div>
+
+      <div class="query-area">
+        <div class="query-row">
+          <div class="input-wrap">
+            <span class="input-prefix">&gt;</span>
+            <input id="queryInput" type="text" placeholder="google.com" autocomplete="off" spellcheck="false" aria-label="Lookup query">
+          </div>
+          <button class="run" id="runBtn">Run lookup ↗</button>
+        </div>
+
+        <div class="query-meta">
+          <span id="hint">Enter a domain name, e.g. google.com</span>
+          <span class="examples" id="examples"></span>
+        </div>
+      </div>
+
+      <div class="result-shell">
+        <div class="result-head">
+          <div class="result-status">
+            <span class="status-dot" id="statusDot"></span>
+            <span id="statusText">ready</span>
+            <span id="timing"></span>
+          </div>
+
+          <div class="result-actions">
+            <button class="result-btn" id="copyBtn" type="button">Copy JSON</button>
+            <button class="result-btn" id="jsonBtn" type="button">JSON</button>
+          </div>
+        </div>
+
+        <div class="result-body" id="resultBody">
+          <div class="empty">
+            <div>
+              <strong>Ready when you are.</strong>
+              Run a lookup to inspect the response from your FastAPI service.
+            </div>
+          </div>
+        </div>
+        <pre class="json-view" id="jsonView"></pre>
+      </div>
+    </section>
+
+    <footer>
+      <span>LOOKUP · local network utility</span>
+      <span class="footer-links">
+        <a href="http://127.0.0.1:8000/docs" target="_blank" rel="noopener">Swagger</a>
+        <a href="http://127.0.0.1:8000/openapi.json" target="_blank" rel="noopener">OpenAPI</a>
+      </span>
+    </footer>
+  </main>
+
+  <script>
+    const modes = {
+      dns: {
+        placeholder: "google.com",
+        hint: "Enter a domain name, e.g. google.com",
+        endpoint: d => `/dns/${d}`,
+        label: "GET /dns/{domain}",
+        examples: ["google.com", "cloudflare.com", "github.com"]
+      },
+      "reverse-dns": {
+        placeholder: "8.8.8.8",
+        hint: "Enter a public IP address, e.g. 8.8.8.8",
+        endpoint: d => `/reverse-dns/${d}`,
+        label: "GET /reverse-dns/{ip}",
+        examples: ["8.8.8.8", "1.1.1.1", "9.9.9.9"]
+      },
+      geolocation: {
+        placeholder: "8.8.8.8",
+        hint: "Enter a public IP address — private/reserved IPs are rejected.",
+        endpoint: d => `/geolocation/${d}`,
+        label: "GET /geolocation/{ip}",
+        examples: ["8.8.8.8", "1.1.1.1", "9.9.9.9"]
+      }
+    };
