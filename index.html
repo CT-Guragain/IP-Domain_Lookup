@@ -858,3 +858,120 @@
       resultBody.classList.remove("hidden");
       jsonView.classList.remove("visible");
     }
+
+    function renderData(data) {
+      let pairs = [];
+
+      if (currentMode === "dns") {
+        pairs = [
+          { key: "domain", val: data.domain },
+          { key: "A", val: data.A, mono: true },
+          { key: "AAAA", val: data.AAAA, mono: true },
+          { key: "MX", val: data.MX, mono: true },
+          { key: "NS", val: data.NS, mono: true },
+          { key: "CNAME", val: data.CNAME, mono: true },
+          { key: "TXT", val: data.TXT, mono: true },
+          { key: "SOA", val: data.SOA, mono: true }
+        ];
+      } else if (currentMode === "reverse-dns") {
+        pairs = [
+          { key: "ip", val: data.ip },
+          { key: "resolved", val: data.resolved },
+          { key: "hostname", val: data.hostname || "—" },
+          { key: "aliases", val: data.aliases || [], mono: true }
+        ];
+      } else {
+        pairs = Object.entries(data).map(([key, val]) => ({ key, val }));
+      }
+
+      renderLines(pairs);
+    }
+
+    function updateExamples() {
+      examples.innerHTML = modes[currentMode].examples.map(example =>
+        `<button class="example" type="button" data-value="${escapeHtml(example)}">${escapeHtml(example)}</button>`
+      ).join("");
+
+      examples.querySelectorAll(".example").forEach(button => {
+        button.addEventListener("click", () => {
+          input.value = button.dataset.value;
+          input.focus();
+        });
+      });
+    }
+
+    tabs.forEach(tab => {
+      tab.addEventListener("click", () => {
+        tabs.forEach(t => {
+          t.classList.remove("active");
+          t.setAttribute("aria-selected", "false");
+        });
+
+        tab.classList.add("active");
+        tab.setAttribute("aria-selected", "true");
+        currentMode = tab.dataset.mode;
+
+        const mode = modes[currentMode];
+        input.placeholder = mode.placeholder;
+        hint.textContent = mode.hint;
+        endpointLabel.textContent = mode.label;
+        input.value = "";
+        lastData = null;
+
+        setStatus("", "ready");
+        timing.textContent = "";
+        resultBody.innerHTML = `
+          <div class="empty">
+            <div>
+              <strong>${currentMode === "dns" ? "Inspect DNS records." : currentMode === "reverse-dns" ? "Resolve a hostname." : "Locate a public IP."}</strong>
+              Enter a value above or choose an example to begin.
+            </div>
+          </div>`;
+        jsonView.classList.remove("visible");
+        resultBody.classList.remove("hidden");
+        updateExamples();
+      });
+    });
+
+    
+    baseUrlInput.addEventListener("input", () => {
+      const base = baseUrlInput.value.trim().replace(/\/$/, "");
+      docsLink.href = `${base}/docs`;
+    });
+
+    async function runQuery() {
+      const value = input.value.trim();
+
+      if (!value) {
+        hint.textContent = "Type something to look up first.";
+        input.focus();
+        return;
+      }
+
+      const base = baseUrlInput.value.trim().replace(/\/$/, "");
+
+      if (!base) {
+        setStatus("err", "missing server");
+        renderError("Enter the URL of your FastAPI server.");
+        return;
+      }
+
+      const url = base + modes[currentMode].endpoint(encodeURIComponent(value));
+      const started = performance.now();
+
+      runBtn.disabled = true;
+      runBtn.textContent = "Resolving…";
+      setStatus("live", `GET ${modes[currentMode].endpoint(value)}`);
+      resultBody.innerHTML = `<div class="empty"><div><strong>Query in progress…</strong>Waiting for the upstream response.</div></div>`;
+      jsonView.classList.remove("visible");
+
+      try {
+        const response = await fetch(url, { headers: { "Accept": "application/json" } });
+        const elapsed = Math.round(performance.now() - started);
+
+        let data;
+        try {
+          data = await response.json();
+        } catch {
+          data = { detail: "Server returned an invalid JSON response." };
+        }
