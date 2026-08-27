@@ -581,4 +581,119 @@
       border-radius: 5px;
       background: rgba(93,226,242,.055);
     }
-    
+  
+    .error {
+      color: var(--red);
+      font: 12px/1.6 "IBM Plex Mono", monospace;
+      padding: 12px;
+      border: 1px solid rgba(255,112,120,.14);
+      border-radius: 9px;
+      background: rgba(255,112,120,.035);
+    }
+
+    /* JSON view */
+    .json-view {
+      display: none;
+      max-height: 430px;
+      overflow: auto;
+      padding: 17px;
+      margin: 0;
+      color: #bfeef3;
+      font: 11px/1.65 "IBM Plex Mono", monospace;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .json-view.visible { display: block; }
+    .result-body.hidden { display: none; }
+
+    /* Footer */
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      padding-top: 24px;
+      color: var(--muted-2);
+      font: 10px "IBM Plex Mono", monospace;
+    }
+
+    footer .footer-links {
+      display: flex;
+      gap: 14px;
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    footer a:hover { color: var(--cyan); }
+
+    @media (max-width: 760px) {
+      .shell { width: min(100% - 24px, 1120px); padding-top: 18px; }
+      .topbar { margin-bottom: 50px; align-items: flex-start; }
+      .top-actions .link-btn { display: none; }
+      .server { max-width: 190px; }
+      .server input { width: 125px; }
+      .tools { grid-template-columns: 1fr; }
+      .tool.active::after { display: none; }
+      .query-row { grid-template-columns: 1fr; }
+      .run { min-height: 50px; }
+      .query-meta { flex-direction: column; }
+      .examples { justify-content: flex-start; }
+      .line { grid-template-columns: 75px 1fr; gap: 9px; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 480px) {
+      .topbar { flex-direction: column; }
+      .top-actions { width: 100%; }
+      .server { width: 100%; max-width: none; }
+      h1 { font-size: 48px; }
+      .hero p { font-size: 14px; }
+      .workspace-head { padding: 13px; }
+      .tools, .query-area { padding: 12px; }
+      .result-shell { margin: 0 12px 12px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Lookup home">
+        <span class="brand-mark" aria-hidden="true"></span>
+        lookup.
+      </a>
+
+      <div class="top-actions">
+        <label class="server" title="FastAPI server URL">
+          <span>server</span>
+          <input id="baseUrl" type="text" value="http://127.0.0.1:8000" spellcheck="false" aria-label="API server URL">
+        </label>
+        <a class="link-btn" id="docsLink" href="http://127.0.0.1:8000/docs" target="_blank" rel="noopener">API Docs ↗</a>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div class="eyebrow"><span class="eyebrow-dot"></span> Network intelligence toolkit</div>
+      <h1>Find what's behind <span class="accent">the address.</span></h1>
+      <p>Inspect DNS records, resolve hostnames, and locate public IP addresses through one focused interface.</p>
+
+      <div class="stats" aria-label="Project capabilities">
+        <span class="stat"><strong>03</strong> endpoints</span>
+        <span class="stat"><strong>DNS</strong> resolver</span>
+        <span class="stat"><strong>IP</strong> intelligence</span>
+        <span class="stat"><strong>FastAPI</strong> backend</span>
+      </div>
+    </section>
+
+    <section class="workspace" aria-label="Lookup workspace">
+      <div class="workspace-head">
+        <div class="workspace-title">
+          <span class="traffic" aria-hidden="true"><i></i><i></i><i></i></span>
+          lookup console
+        </div>
+        <div class="workspace-title" id="endpointLabel">GET /dns/{domain}</div>
+      </div>
