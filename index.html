@@ -31,3 +31,31 @@
       --shadow: 0 28px 80px rgba(0,0,0,.34);
       --radius: 16px;
     }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle 700px at 10% -5%, rgba(49, 191, 216, .11), transparent 62%),
+        radial-gradient(circle 600px at 95% 10%, rgba(105, 92, 255, .08), transparent 62%),
+        linear-gradient(180deg, #070a12 0%, #090d18 100%);
+      font-family: "DM Sans", sans-serif;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .17;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: linear-gradient(to bottom, black, transparent 75%);
+    }
