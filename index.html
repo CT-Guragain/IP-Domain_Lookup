@@ -116,3 +116,114 @@
       align-items: center;
       gap: 9px;
     }
+
+    .server {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 11px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255,255,255,.025);
+      color: var(--muted);
+      font: 12px "IBM Plex Mono", monospace;
+    }
+
+    .server input {
+      width: 180px;
+      color: var(--text);
+      background: transparent;
+      border: 0;
+      outline: 0;
+      font: inherit;
+    }
+
+    .server input:focus { color: var(--cyan); }
+
+    .link-btn, .ghost-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 38px;
+      padding: 0 13px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(255,255,255,.025);
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: .18s ease;
+      cursor: pointer;
+    }
+
+    .link-btn:hover, .ghost-btn:hover {
+      color: var(--text);
+      border-color: var(--line-strong);
+      background: rgba(255,255,255,.05);
+      transform: translateY(-1px);
+    }
+
+    /* Hero */
+    .hero {
+      max-width: 830px;
+      margin: 0 auto 44px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border: 1px solid rgba(93,226,242,.17);
+      border-radius: 999px;
+      background: rgba(93,226,242,.055);
+      color: #a8eff7;
+      font: 11px "IBM Plex Mono", monospace;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 10px rgba(103,230,163,.75);
+    }
+
+    h1 {
+      margin: 18px 0 14px;
+      font-size: clamp(48px, 7vw, 78px);
+      line-height: .98;
+      letter-spacing: -.065em;
+      font-weight: 700;
+    }
+
+    h1 .accent { color: var(--cyan); }
+
+    .hero p {
+      max-width: 620px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 23px;
+    }
+
+    .stat {
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      color: var(--muted);
+      background: rgba(255,255,255,.02);
+      font: 11px "IBM Plex Mono", monospace;
+    }
