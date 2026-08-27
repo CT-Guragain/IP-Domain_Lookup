@@ -792,3 +792,69 @@
         examples: ["8.8.8.8", "1.1.1.1", "9.9.9.9"]
       }
     };
+
+  
+    let currentMode = "dns";
+    let lastData = null;
+
+    const $ = id => document.getElementById(id);
+    const tabs = document.querySelectorAll(".tool");
+    const input = $("queryInput");
+    const hint = $("hint");
+    const runBtn = $("runBtn");
+    const statusDot = $("statusDot");
+    const statusText = $("statusText");
+    const timing = $("timing");
+    const resultBody = $("resultBody");
+    const jsonView = $("jsonView");
+    const baseUrlInput = $("baseUrl");
+    const endpointLabel = $("endpointLabel");
+    const docsLink = $("docsLink");
+    const examples = $("examples");
+
+    function escapeHtml(value) {
+      return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function setStatus(state, label, ms = "") {
+      statusDot.className = "status-dot" + (state ? ` ${state}` : "");
+      statusText.textContent = label;
+      timing.textContent = ms ? `· ${ms}ms` : "";
+    }
+
+    function fmtValue(value) {
+      if (Array.isArray(value)) {
+        if (!value.length) return `<span style="color:var(--muted-2)">none</span>`;
+        return `<div class="value-stack">${value.map(v =>
+          `<span class="value-chip">${escapeHtml(v)}</span>`
+        ).join("")}</div>`;
+      }
+      if (value === null || value === undefined || value === "") {
+        return `<span style="color:var(--muted-2)">—</span>`;
+      }
+      return escapeHtml(value);
+    }
+
+    function renderLines(pairs) {
+      resultBody.innerHTML = `<div class="lines">${
+        pairs.map((p, i) => `
+          <div class="line" style="animation-delay:${i * 0.045}s">
+            <span class="key">${escapeHtml(p.key)}</span>
+            <span class="val${p.mono ? " mono-list" : ""}">${fmtValue(p.val)}</span>
+          </div>
+        `).join("")
+      }</div>`;
+      resultBody.classList.remove("hidden");
+      jsonView.classList.remove("visible");
+    }
+
+    function renderError(message) {
+      resultBody.innerHTML = `<div class="error">${escapeHtml(message)}</div>`;
+      resultBody.classList.remove("hidden");
+      jsonView.classList.remove("visible");
+    }
