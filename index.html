@@ -933,7 +933,6 @@
       });
     });
 
-    
     baseUrlInput.addEventListener("input", () => {
       const base = baseUrlInput.value.trim().replace(/\/$/, "");
       docsLink.href = `${base}/docs`;
@@ -975,3 +974,55 @@
         } catch {
           data = { detail: "Server returned an invalid JSON response." };
         }
+
+        if (!response.ok) {
+          setStatus("err", `HTTP ${response.status}`, elapsed);
+          renderError(data.detail || "Request failed.");
+          lastData = data;
+          return;
+        }
+
+        lastData = data;
+        setStatus("ok", `HTTP ${response.status} · resolved`, elapsed);
+        renderData(data);
+      } catch (error) {
+        const elapsed = Math.round(performance.now() - started);
+        setStatus("err", "connection failed", elapsed);
+        renderError(`Could not reach ${base}. Is the FastAPI server running? ${error.message}`);
+        lastData = null;
+      } finally {
+        runBtn.disabled = false;
+        runBtn.textContent = "Run lookup ↗";
+      }
+    }
+
+    runBtn.addEventListener("click", runQuery);
+
+    input.addEventListener("keydown", event => {
+      if (event.key === "Enter") runQuery();
+    });
+
+    $("jsonBtn").addEventListener("click", () => {
+      if (!lastData) return;
+      jsonView.textContent = JSON.stringify(lastData, null, 2);
+      resultBody.classList.add("hidden");
+      jsonView.classList.toggle("visible");
+    });
+
+    $("copyBtn").addEventListener("click", async () => {
+      if (!lastData) return;
+      try {
+        await navigator.clipboard.writeText(JSON.stringify(lastData, null, 2));
+        const button = $("copyBtn");
+        const original = button.textContent;
+        button.textContent = "Copied ✓";
+        setTimeout(() => button.textContent = original, 1200);
+      } catch {
+        $("copyBtn").textContent = "Copy failed";
+        setTimeout(() => $("copyBtn").textContent = "Copy JSON", 1200);
+      }
+    });
+    updateExamples();
+  </script>
+</body>
+</html>
