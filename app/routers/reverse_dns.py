@@ -5,7 +5,6 @@ from app.services import reverse_dns_service
 
 router = APIRouter(tags=["reverse-dns"])
 
-
 @router.get("/reverse-dns/{ip}", response_model=ReverseDNSResult)
 def get_reverse_dns(ip: str):
     """
